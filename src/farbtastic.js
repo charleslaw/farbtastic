@@ -128,7 +128,7 @@ $._farbtastic = function (container, options) {
         '</div>'
       )
       .find('*').attr(dim).css(dim).end()
-      .find('div>*').css('position', 'absolute');
+      .find('div>*').css('position', 'absolute').css('top', '0').css('left', '0');
 
     // IE Fix: Recreate canvas elements with doc.createElement and excanvas.
     if(! document.createElement("canvas").getContext && !! G_vmlCanvasManager){
