@@ -461,6 +461,46 @@ $._farbtastic = function (container, options) {
     $._farbtastic.dragging = false;
   }
 
+  /**
+   * TouchConvert: Converts touch co-ordinates to mouse co-ordinates
+   */
+  fb.touchconvert = function (e) {
+    var e = e.originalEvent.touches.item(0);
+    return e;
+  }
+
+  /**
+   * Touchmove handler for iPad, iPhone etc
+   */
+  fb.touchmove = function (e) {
+    fb.mousemove( fb.touchconvert(e)  );
+    event.preventDefault();
+    return false;
+  }
+
+  /**
+   * Touchend handler for iPad, iPhone etc
+   */
+  fb.touchend = function (event) {
+    $(document).off('touchmove', fb.touchmove);
+    $(document).off('touchend', fb.touchend);
+    $._farbtastic.dragging = false;
+    event.preventDefault();
+    return false;
+  }
+
+  // TouchStart bound, calls conversion of touchpoints to mousepoints
+  fb.touchstart = function (e) {
+    // Capture mouse
+    if (!$._farbtastic.dragging) {
+      $(document).on('touchmove', fb.touchmove).on('touchend', fb.touchend);
+      $._farbtastic.dragging = true;
+    }
+    fb.mousedown( fb.touchconvert(e) );
+    e.preventDefault();
+    return false;
+  };
+
   /* Various color utility functions */
   fb.dec2hex = function (x) {
     return (x < 16 ? '0' : '') + x.toString(16);
@@ -543,6 +583,7 @@ $._farbtastic = function (container, options) {
 
   // Install mousedown handler (the others are set on the document on-demand)
   $('canvas.farbtastic-overlay', container).mousedown(fb.mousedown);
+  $('canvas.farbtastic-overlay', container).on('touchstart', fb.touchstart);
 
   // Set linked elements/callback
   if (options.callback) {
