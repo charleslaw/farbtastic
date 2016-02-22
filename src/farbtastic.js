@@ -121,7 +121,7 @@ $._farbtastic = function (container, options) {
     };
     $(container)
       .html(
-        '<div class="farbtastic" style="position: relative">' +
+        '<div class="farbtastic" style="position: relative;cursor: crosshair;">' +
           '<div class="farbtastic-solid"></div>' +
           '<canvas class="farbtastic-mask"></canvas>' +
           '<canvas class="farbtastic-overlay"></canvas>' +
