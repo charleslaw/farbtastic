@@ -32,7 +32,8 @@ $._farbtastic = function (container, options) {
     width: 300,
     wheelWidth: (options.width || 300) / 10,
     callback: null,
-    color: "#808080"
+    color: "#808080",
+    smartCursor: true
   };
 
   fb._initialized = false;
@@ -362,7 +363,11 @@ $._farbtastic = function (container, options) {
    */
   fb.updateDisplay = function () {
     // Determine whether labels/markers should invert.
-    fb.invert = (fb.rgb[0] * 0.3 + fb.rgb[1] * .59 + fb.rgb[2] * .11) <= 0.6;
+    if (options.smartCursor) {
+        fb.invert = (fb.rgb[0] * 0.3 + fb.rgb[1] * .59 + fb.rgb[2] * .11) <= 0.6;
+    } else {
+        fb.invert = true;
+    }
 
     // Update the solid background fill.
     fb.solidFill.css('backgroundColor', fb.pack(fb.HSLToRGB([fb.hsl[0], 1, 0.5])));
